@@ -1,0 +1,107 @@
+# Author : Abd EL-Rahman Fawzy & Mo'men Mostafa
+# Date : 10/3/2022
+# From Faculty of Computer Science and Artificial Intelligence Cairo University
+# Pdf programme allows you to make 3 function to merge many pdfs, split page or split all the file pages
+
+
+# The library that includes the builtin function that we need
+import PyPDF2
+
+
+# The first function that merge many files as user needs
+def merge_func():
+
+    pdfs = []
+
+    the_new_file_name = str(input("Enter the new file name"))
+
+    the_merger = PyPDF2.PdfFileMerger()
+
+    number_of_files = int(input("Enter how many files you want to merge "))
+
+    for j in range(number_of_files):
+        file_name = str(input("enter file path")+".pdf")
+        pdfs.append(file_name)
+
+    for item in pdfs:
+        the_merger.append(item)
+
+    the_merger.write(the_new_file_name+".pdf")
+
+
+# The second function that split a page from the pdf file
+def split_pages():
+
+    file = str(input("Enter the file name")+".pdf")
+
+    file_name = str(input("Enter the name of the page ")+".pdf")
+
+    page_number = int(input("Enter page number "))-1
+
+    file_1 = open(file, "rb")
+
+    pdf_reader = PyPDF2.PdfFileReader(file_1)
+
+    pdf_writer = PyPDF2.PdfFileWriter()
+
+    the_page = pdf_reader.getPage(page_number)
+
+    pdf_writer.addPage(the_page)
+
+    the_page_file = open(file_name, "wb")
+
+    pdf_writer.write(the_page_file)
+
+
+# The Third function that split every page from the pdf file
+def extract_pages():
+
+    file = str(input("Enter the file name"))
+
+    file_1 = open(file + ".pdf", "rb")
+
+    pdf_reader = PyPDF2.PdfFileReader(file_1)
+
+    page = pdf_reader.numPages
+
+    for i in range(page):
+        file_name = str(file+"page num "+str(i+1)+".pdf")
+
+        pdf_writer = PyPDF2.PdfFileWriter()
+
+        the_page = pdf_reader.getPage(i)
+
+        pdf_writer.addPage(the_page)
+
+        the_page_file = open(file_name, "wb")
+
+        pdf_writer.write(the_page_file)
+
+
+# Here we decide which function that we will execute
+while True:
+    UserChoice = int(input("To merge  pdf files enter 1  \n"
+                           "To split page enter 2\n"
+                           "To extract pages enter 3\n"
+                           "To exit enter 4 \n"))
+    if UserChoice < 1 or UserChoice > 4:
+        print("invalid input")
+        continue
+
+    if UserChoice == 1:
+        merge_func()
+        print("\n\nsuccessfully done\n\n")
+
+    elif UserChoice == 2:
+        split_pages()
+        print("\n\nsuccessfully done\n\n")
+
+    elif UserChoice == 3:
+        extract_pages()
+        print("\n\nsuccessfully done\n\n")
+
+    elif UserChoice == 4:
+        print("\n\nsuccessfully done\n\n")
+        break
+    else:
+        print("NOT a valid choice please try again")
